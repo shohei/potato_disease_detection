@@ -12,6 +12,7 @@
    - Train : 1.0, Validation: 0.91, Test :0.586
 - 2位：XGBoost　
   - Train : 0.998, Validation: 0.86, Test, 0.34
+
 上記分類機でも性能は出るが未知データセットへの汎化性能は低い
 
 # Todo
