@@ -19,3 +19,6 @@
 - ハイパーパラメータチューニング
 - CNN推論速度の検証
 - TensorRTの利用
+-  ROC曲線
+- Object detectionとの連携
+-  Mobileへの実装
