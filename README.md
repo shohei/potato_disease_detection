@@ -19,6 +19,7 @@
 - ハイパーパラメータチューニング
 - CNN推論速度の検証
 - TensorRTの利用
--  ROC曲線
+- ROC曲線
 - Object detectionとの連携
--  Mobileへの実装
+- Mobileへの実装 (Tensorflow lite, Pytorch live)
+-  GANによる画像生成
