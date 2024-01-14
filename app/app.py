@@ -3,14 +3,10 @@ import torch
 import torch
 import torch.nn as nn
 from torchvision import models, datasets, transforms
-import matplotlib.pyplot as plt
 import os 
-import numpy as np
 from tqdm import tqdm
 import tempfile
 from torch.utils.data import Dataset
-from PIL import Image
-import pdb
 
 tempfile_dir = tempfile.TemporaryDirectory()
 
@@ -28,35 +24,8 @@ model_ft = model_ft.to(device)
 
 data_dir = '../notebook/potato'
 
-class MyDataset(Dataset):
-    def __init__(self, image_paths, transform=None):
-        self.image_paths = image_paths
-        self.transform = transform
-        
-    def get_class_label(self, image_name):
-        # your method here
-        y = 'no label'
-        return y
-        
-    def __getitem__(self, index):
-        image_path = self.image_paths[index]
-        x = Image.open(image_path)
-        y = self.get_class_label(image_path.split('/')[-1])
-        if self.transform is not None:
-            x = self.transform(x)
-        return x, y
-    
-    def __len__(self):
-        return len(self.image_paths)
-
-
 if model_file:
     model_file_path = os.path.join(os.getcwd(),"../model",model_file)
-    # st.write(model_file_name)
-    # tempfile_name = os.path.join(tempfile_dir.name, model_file_name)
-    # with open(tempfile_name, "wb") as f:
-    #     f.write(model_file.getbuffer())
-    # model_file_path = tempfile_name
     model_ft.load_state_dict(torch.load(model_file_path, map_location=torch.device('cpu')))
 
 f1 = st.empty()
