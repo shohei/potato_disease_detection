@@ -5,10 +5,14 @@
 
 ```
 $ cd app
-$ /start.sh
+$ ./start.sh
 ```	
 
 ### Video demo
 ![](image/demo.gif)
+```
+$ cd app_video_input
+$ python app.py
+```	
 
 
