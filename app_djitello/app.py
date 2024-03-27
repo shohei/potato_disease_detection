@@ -13,8 +13,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from djitellopy import Tello    # DJITelloPyのTelloクラスをインポート
 import time                     # time.sleepを使いたいので
-import matplotlib
-matplotlib.use("Qt5agg")
 
 model_file_path = "../model/model_ft_gpu.pth"
 model_ft = models.resnet18(pretrained=True)
@@ -100,7 +98,9 @@ def main():
                     plt.text(-10, -20, "detected", color="red", horizontalalignment='center', verticalalignment='center')
                     # plt.pause(5)
             plt.draw()
-            plt.pause(0.000001)
+            plt.pause(0.0001)
+            # plt.gcf().canvas.draw_idle()
+            # plt.gcf().canvas.start_event_loop(0.0001)
             plt.cla()
 
             # (4) ウィンドウに表示
