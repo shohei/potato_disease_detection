@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from djitellopy import Tello    # DJITelloPyのTelloクラスをインポート
 import time                     # time.sleepを使いたいので
+import pdb
 
 model_file_path = "../model/model_ft_gpu.pth"
 model_ft = models.resnet18(pretrained=True)
@@ -33,7 +34,12 @@ preprocess = transforms.Compose([
 
 class_names = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
 
-# cap = cv2.VideoCapture('test.mov')
+font                   = cv2.FONT_HERSHEY_SIMPLEX
+topLeftCornerOfText = (10,30)
+fontScale              = 1
+fontColor              = (255,255,255)
+thickness              = 1
+lineType               = 2
 
 # メイン関数
 def main():
@@ -87,22 +93,35 @@ def main():
             pil_image = Image.fromarray(frame)
             img_tensor = preprocess(pil_image)
             img_tensor = img_tensor.unsqueeze(0)
-            plt.imshow(img_tensor.squeeze().permute(1, 2, 0))
+            cropped_img = img_tensor.squeeze().permute(1, 2, 0).numpy()
+            cv2.imshow('frame2',cropped_img)
 
             with torch.no_grad():
                 pred = model_ft(img_tensor)
                 predicted = class_names[pred[0].argmax(0)]
-                plt.text(-10, -10, predicted, horizontalalignment='center', verticalalignment='center')
-                if pred[0].argmax(0)!=2:
-                    print(f'Predicted: "{predicted}"')
-                    plt.text(-10, -20, "detected", color="red", horizontalalignment='center', verticalalignment='center')
-                    # plt.pause(5)
-            plt.draw()
-            plt.pause(0.0001)
-            # plt.gcf().canvas.draw_idle()
-            # plt.gcf().canvas.start_event_loop(0.0001)
-            plt.cla()
+                pred_index = pred[0].argmax(0)
+                if(pred_index)!=0:
+                    fontColor = (255,0,0)
+                if(pred_index)!=1:
+                    fontColor = (128,128,128)
+                if(pred_index)!=2:
+                    fontColor = (255,255,255)
 
+                blank_image = np.zeros((50,400,3), np.uint8)
+                cv2.putText(
+                    img = blank_image,
+                    text = predicted,
+                    org = topLeftCornerOfText,
+                    fontFace = font,
+                    fontScale = fontScale,
+                    color = fontColor,
+                    thickness = thickness,
+                )
+                print(f'Predicted: "{predicted}"')
+                cv2.imshow('frame3',blank_image)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+            
             # (4) ウィンドウに表示
             cv2.imshow('OpenCV Window', small_image)    # ウィンドウに表示するイメージを変えれば色々表示できる
 
